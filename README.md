@@ -8,6 +8,6 @@ HECTOR is described in the pre-print https://www.medrxiv.org/content/10.1101/202
 
 HECTOR is a multimodal deep learning model to predict clinical endpoit, here distant recurrence-free probability from digitized tumour slide (here H&E-stained) and categorical risk factors, here the tumour stage. 
 
-![HECTOR pipeline](docs/HECTOR_pipeline.jpg)
+![HECTOR pipeline](docs/HECTOR_pipeline.png)
 *HECTOR pipeline*
 
