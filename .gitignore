@@ -1,0 +1,6 @@
+.conda/
+__pycache__/
+.ipynb_checkpoints/
+runs/
+predictions/
+log_*.out
