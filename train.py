@@ -272,8 +272,9 @@ def prepare_datasets(args):
     assert len(bins_values)==n_bins
     print(f'Read {args.manifest} dataset containing {len(df)} samples with {n_bins} bins of following values {bins_values}')
 
-    df.stage = df.stage.apply(lambda x : 'III' if 'III' in x else ('II' if 'II' in x else 'I')).astype("category")
-    df.stage = pd.Categorical(df['stage'], categories=['I', 'II', 'III'], ordered=True).codes
+    # NOTE: you may need to use the two lines below depending on how the category is listed in the csv file. 
+    #df.stage = df.stage.apply(lambda x : 'III' if 'III' in x else ('II' if 'II' in x else 'I')).astype("category")
+    #df.stage = pd.Categorical(df['stage'], categories=['I', 'II', 'III'], ordered=True).codes
     print(f'stage taxonomy used: {df.stage.unique()}')
 
     try:
@@ -349,7 +350,6 @@ def main(args):
         # Model architecture parameters. See model class for details.
         precompression_layer=True,
         feature_size_comp=512,
-        kernel_size=3,
         feature_size_attn=256,
         postcompression_layer=True,
         feature_size_comp_post=128,

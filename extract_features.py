@@ -605,6 +605,11 @@ def extract_save_features(args):
     qc_img.save(qc_img_file_path)
     print(f"Finished creating {len(filtered_tiles)} tissue tiles in {time.time() - start_time}s")
 
+    # Save QC figure.
+    qc_img_file_path = os.path.join(
+        args.output_dir, f"{slide_id}_N{len(mergedpatches)}mergedpatches_distThreshold{args.dist_threshold}_corrThreshold{args.corr_threshold}.png"
+    )
+
     # Extract the rectangles, and compute the feature vectors. Example using EsVIT. 
     device = torch.device("cuda") 
     model, _, depths = load_encoder_esVIT(args, device)
@@ -634,10 +639,6 @@ def extract_save_features(args):
     # distinguish incomplete bags of patches (due to e.g. errors) from complete ones in case a job fails.
     os.rename(wip_file_path, output_file_path)
 
-    # Save QC figure.
-    qc_img_file_path = os.path.join(
-        args.output_dir, f"{slide_id}_N{len(mergedpatches)}mergedpatches_distThreshold{args.dist_threshold}_corrThreshold{args.corr_threshold}.png"
-    )
     print('Done.')
 
 if __name__ == '__main__':
