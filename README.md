@@ -2,7 +2,7 @@
 
 **HECTOR** - **H**istopathology-based **E**ndometrial **C**ancer **T**ailored **O**utcome **R**isk. 
 
-HECTOR is described in the pre-print https://www.medrxiv.org/content/10.1101/2023.11.27.23298994v1. 
+**_Volinsky-Fremond, S., Horeweg, N., Andani, S. et al. Prediction of recurrence risk in endometrial cancer with multimodal deep learning. Nat Med (2024)_**. https://doi.org/10.1038/s41591-024-02993-w. 
 
 HECTOR is a multimodal deep learning model to predict clinical endpoint, here distant recurrence-free probability from digitized tumour slide (here H&E-stained) and categorical risk factors, here the tumour stage, in endometrial cancer.
 
@@ -22,11 +22,11 @@ conda activate ./.conda
 
 As HECTOR uses Multiple Instance Learning, each whole slide image needs to be converted into a bag of feature vectors using a feature extractor model. 
 
-We recommend using the feature extractor of your choice and adapt the two functions extract_features and load_model in the extract_features.py code. In the publication, we trained [EsVIT](https://github.com/microsoft/esvit) on endometrial cancer patches, for which we have provided an example on how to load the encoder and extract the EsVIT features from the last n blocks. For the latter method or similar, the following command can be used. Note that avgpool_patchtokens, n_last_blocks, patch_size, arch, cfg, are specific to the use of EsVIT, for which the esvit repository needs to be downloaded in the HECTOR repository.  
+We recommend using the feature extractor of your choice and adapt the two functions `extract_features` and `load_model` in the `extract_features.py` code. In the publication, we trained [EsVIT](https://github.com/microsoft/esvit) on endometrial cancer patches, for which we have provided an example on how to load the encoder and extract the EsVIT features from the last n blocks. For the latter method or similar, the following command can be used. Note that `avgpool_patchtokens`, `n_last_blocks`, `patch_size`, `arch`, `cfg`, are specific to the use of EsVIT, for which the esvit repository needs to be downloaded in the HECTOR repository.  
 
-All feature vectors of a WSI will be saved together in a 'feature bag' in the `.pt` file format. Additionally, features are structured as a nested numpy array such that features that are semantically (cosine similarity threshold option) and spatially (L2 norm threshold option) similar are saved together and can be averaged if needed in the FeatureBagsDataset from utils.py. A quality control image will be generated in the same output directory so the user can evaluate the quality of the tissue segmentation and patching.
+All feature vectors of a WSI will be saved together in a 'feature bag' in the `.pt` file format. Additionally, features are structured as a nested numpy array such that features that are semantically (cosine similarity threshold option) and spatially (L2 norm threshold option) similar are saved together and can be averaged if needed in the `FeatureBagsDataset` class found in `utils.py`. A quality control image will be generated in the same output directory so the user can evaluate the quality of the tissue segmentation and patching.
 
-Background segmentation can use Otsu Thresholding or Stain deconvolution. The latter needs to import histomicstk using pip install histomicstk --find-links https://girder.github.io/large_image_wheels
+Background segmentation can use Otsu Thresholding or Stain deconvolution. The latter requires `histomicstk` to be installed using `pip install histomicstk --find-links https://girder.github.io/large_image_wheels`
 
 ```sh
 python extract_features.py \
@@ -61,11 +61,11 @@ You should have a csv file where labels and input data information are reported.
 - a "split" column with values either training or validation
 
 ## Nesting the im4MEC model 
-For [im4MEC](https://github.com/AIRMEC/im4MEC/), we use the the im4MEC.py codebase and the checkpoint needs to be reported in --checkpoint_model_molecular, as well as other information related to the model architecture. This bit is optional and can be removed or replaced by another categorical risk factor for instance.
+For [im4MEC](https://github.com/AIRMEC/im4MEC/), we use the the im4MEC.py codebase and the checkpoint needs to be reported in `--checkpoint_model_molecular`, as well as other information related to the model architecture. This bit is optional and can be removed or replaced by another categorical risk factor for instance.
 
 ## Training HECTOR
 
-Any architectural parameter of HECTOR can be changed in the hparam_sets list of the train.py code with the correct hp index. The following command can be subsequently used. Code related to metric computation and tensorboard log can be found in utils.py. Model is trained on training split and evaluated after each epoch on validation as defined in the csv file. 
+Any architectural parameter of HECTOR can be changed in the hparam_sets list of the `train.py` code with the correct hp index. The following command can be subsequently used. Code related to metric computation and tensorboard log can be found in `utils.py`. Model is trained on training split and evaluated after each epoch on validation as defined in the csv file. 
 
 ```sh
 python train.py \
@@ -80,7 +80,3 @@ python train.py \
 --workers 4 \
 --hp 0
 ```
-
-# Evaluating HECTOR on a test set
-
-Code will be released in a few days. 
